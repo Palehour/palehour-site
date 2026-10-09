@@ -1,0 +1,63 @@
+---
+// Galería de capturas. Sin capturas no renderiza nada (ver `shots` en src/i18n/es.ts).
+// La primera va grande y con carga prioritaria; el resto en grilla y diferidas.
+interface Shot {
+  src: string;
+  alt: string;
+  caption?: string;
+}
+interface Props {
+  shots: Shot[];
+}
+const { shots } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const [first, ...rest] = shots;
+const total = String(shots.length).padStart(2, '0');
+---
+{first && (
+  <div class="shots">
+    <figure class="shot shot-main">
+      <img src={`${base}${first.src}`} alt={first.alt} width="2560" height="1440" decoding="async" />
+      <figcaption>
+        <span>{first.caption}</span>
+        <span class="count" aria-hidden="true">01 / {total}</span>
+      </figcaption>
+    </figure>
+    {rest.length > 0 && (
+      <div class="grid">
+        {rest.map((s) => (
+          <figure class="shot">
+            <img src={`${base}${s.src}`} alt={s.alt} width="1280" height="720" loading="lazy" decoding="async" />
+            {s.caption && <figcaption><span>{s.caption}</span></figcaption>}
+          </figure>
+        ))}
+      </div>
+    )}
+  </div>
+)}
+
+<style>
+  .shots { display: flex; flex-direction: column; gap: var(--sp-5); }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+    gap: var(--sp-5);
+  }
+  .shot { margin: 0; display: flex; flex-direction: column; gap: var(--sp-3); }
+  .shot img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    background: var(--ph-night);
+    border: 1px solid var(--ph-fog-900);
+  }
+  figcaption {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--sp-5);
+    font-size: var(--fs-small);
+    color: var(--ph-fog-400);
+  }
+  .count { letter-spacing: 0.2em; }
+</style>

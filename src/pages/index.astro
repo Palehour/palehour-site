@@ -1,68 +1,20 @@
 ---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Londinium from '../components/Londinium.astro';
+import Studio from '../components/Studio.astro';
 import Contact from '../components/Contact.astro';
-
-const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
-const site = Astro.site ? new URL(base, Astro.site).href : base;
-const title = 'Palehour';
-const description = 'Palehour es un estudio independiente de videojuegos. Londinium — en desarrollo.';
+import Footer from '../components/Footer.astro';
+import { es as copy } from '../i18n/es';
 ---
-<!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <meta name="theme-color" content="#000000" />
-    <link rel="icon" type="image/jpeg" href={`${base}favicon.jpg`} />
-    <link rel="canonical" href={site} />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={site} />
-    <meta property="og:image" content={`${site}og-image.png`} />
-    <meta name="twitter:card" content="summary_large_image" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&display=swap" rel="stylesheet" />
-  </head>
-  <body>
-    <main>
-      <video id="intro" src={`${base}palehour-intro.mp4`} muted autoplay playsinline preload="auto" aria-hidden="true"></video>
-      <div id="brand" class="brand">
-        <img src={`${base}palehour-logo.jpg`} alt="Logo de Palehour" width="160" height="160" />
-        <h1>Palehour</h1>
-        <p>Londinium — en desarrollo</p>
-      </div>
-    </main>
-    <Contact />
-    <script>
-      const video = document.getElementById('intro') as HTMLVideoElement | null;
-      const brand = document.getElementById('brand');
-      const reveal = () => {
-        video?.classList.add('done');
-        brand?.classList.add('shown');
-      };
-      if (!video || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        reveal();
-      } else {
-        video.addEventListener('ended', reveal, { once: true });
-        video.addEventListener('error', reveal, { once: true });
-        video.play()?.catch(reveal);
-        setTimeout(reveal, 20000);
-      }
-    </script>
-    <style is:global>
-      html, body { margin: 0; height: 100%; background: #000; color: #d8dde2; }
-      body { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 300; }
-      main { position: relative; min-height: 100vh; display: grid; place-items: center; overflow: hidden; }
-      video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #000; transition: opacity 2s ease; }
-      video.done { opacity: 0; pointer-events: none; }
-      .brand { text-align: center; opacity: 0; transition: opacity 2.5s ease 0.6s; }
-      .brand.shown { opacity: 1; }
-      .brand img { width: 160px; height: 160px; object-fit: cover; border-radius: 50%; filter: grayscale(0.2); }
-      h1 { margin: 2rem 0 0.75rem; font-weight: 300; font-size: clamp(2rem, 6vw, 3.5rem); letter-spacing: 0.6em; text-transform: uppercase; padding-left: 0.6em; }
-      p { margin: 0; font-size: 1.1rem; letter-spacing: 0.15em; color: #8a939b; }
-    </style>
-  </body>
-</html>
+<Base copy={copy}>
+  <Header copy={copy} />
+  <Hero copy={copy} />
+  <main id="contenido" tabindex="-1">
+    <Londinium copy={copy} />
+    <Studio copy={copy} />
+    <Contact copy={copy} />
+  </main>
+  <Footer copy={copy} />
+</Base>

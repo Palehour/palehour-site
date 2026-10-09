@@ -1,0 +1,17 @@
+---
+// Arco del logo como SVG liviano (decorativo: el nombre lo da el texto o el aria-label del link).
+interface Props {
+  width?: number;
+  color?: string;
+}
+const { width = 34, color = 'var(--ph-glow)' } = Astro.props;
+---
+<svg
+  width={width}
+  height={Math.round((width * 12) / 34)}
+  viewBox="0 0 34 12"
+  aria-hidden="true"
+  focusable="false"
+>
+  <path d="M1 1.5C8 11 26 11 33 1.5C26 8 8 8 1 1.5Z" fill={color}></path>
+</svg>
