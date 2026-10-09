@@ -1,0 +1,58 @@
+---
+import SectionHeader from './SectionHeader.astro';
+import Mark from './Mark.astro';
+import type { Copy } from '../i18n/es';
+
+interface Props {
+  copy: Copy;
+}
+const { copy } = Astro.props;
+const t = copy.studio;
+---
+<section id="estudio" class="section" aria-labelledby="t-estudio">
+  <div class="fog" aria-hidden="true"></div>
+  <div class="container inner">
+    <SectionHeader id="t-estudio" numeral={t.numeral} eyebrow={t.eyebrow} title={t.title} align="center" />
+    <p class="quote">{t.body}</p>
+    <Mark width={34} color="var(--ph-fog-500)" />
+  </div>
+</section>
+
+<style>
+  .section {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding-block: var(--section-y);
+    border-top: 1px solid var(--ph-fog-900);
+  }
+  .fog {
+    position: absolute;
+    left: -10%;
+    right: -10%;
+    bottom: 0;
+    height: 280px;
+    z-index: -1;
+    background: radial-gradient(ellipse 40% 40% at 50% 60%, rgb(139 146 154 / 0.07), transparent 72%);
+    filter: blur(30px);
+    animation: ph-drift 140s ease-in-out infinite alternate-reverse;
+  }
+  .inner {
+    max-width: 880px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
+    text-align: center;
+  }
+  .quote {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-style: italic;
+    font-size: var(--fs-quote);
+    line-height: 1.45;
+    color: var(--ph-pale);
+    text-wrap: balance;
+  }
+</style>

@@ -1,0 +1,253 @@
+---
+import type { Copy } from '../i18n/es';
+
+interface Props {
+  copy: Copy;
+}
+const { copy } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+---
+<section id="inicio" class="hero" aria-label="Palehour">
+  <!-- La intro solo se muestra si el script del <head> marcó <html class="intro">. -->
+  <video
+    class="hero-video"
+    src={`${base}palehour-intro.mp4`}
+    muted
+    playsinline
+    preload="none"
+    aria-hidden="true"
+    tabindex="-1"
+  ></video>
+  <button class="skip-intro" type="button">{copy.hero.skipIntro}</button>
+
+  <div class="fog fog-a" aria-hidden="true"></div>
+  <div class="fog fog-b" aria-hidden="true"></div>
+
+  <h1 class="hero-title" tabindex="-1">
+    <img
+      class="hero-mark reveal reveal-1"
+      src={`${base}palehour-mark.webp`}
+      alt=""
+      width="1120"
+      height="440"
+      fetchpriority="high"
+      decoding="async"
+    />
+    <span class="wordmark reveal reveal-2">Palehour</span>
+  </h1>
+  <p class="tagline reveal reveal-3">{copy.hero.tagline}</p>
+
+  <a class="scroll-cue reveal reveal-3" href="#londinium">
+    <span>{copy.hero.scroll}</span>
+    <span class="cue-line" aria-hidden="true"><span></span></span>
+  </a>
+</section>
+
+<script>
+  const root = document.documentElement;
+
+  if (root.classList.contains('intro')) {
+    const video = document.querySelector<HTMLVideoElement>('.hero-video');
+    const skip = document.querySelector<HTMLButtonElement>('.skip-intro');
+    const title = document.querySelector<HTMLElement>('.hero-title');
+    let done = false;
+
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') end();
+    };
+
+    function end() {
+      if (done) return;
+      done = true;
+      try {
+        sessionStorage.setItem('ph-intro-seen', '1');
+      } catch {}
+      const hadFocus = document.activeElement === skip;
+      root.classList.remove('intro');
+      root.classList.add('intro-out');
+      document.removeEventListener('keydown', onKey);
+      window.setTimeout(() => video?.pause(), 2600);
+      if (hadFocus) title?.focus({ preventScroll: true });
+    }
+
+    if (!video) {
+      end();
+    } else {
+      video.addEventListener('ended', end, { once: true });
+      video.addEventListener('error', end, { once: true });
+      skip?.addEventListener('click', end);
+      document.addEventListener('keydown', onKey);
+      window.setTimeout(end, 14000);
+      video.play()?.catch(end);
+    }
+  }
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    isolation: isolate;
+    min-height: max(640px, 100svh);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 160px var(--gutter) 140px;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  /* Video de intro: oculto salvo durante la intro */
+  .hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: var(--ph-void);
+    z-index: 5;
+    display: none;
+    pointer-events: none;
+  }
+  .skip-intro {
+    position: absolute;
+    right: var(--gutter);
+    bottom: var(--gutter);
+    z-index: 6;
+    display: none;
+    min-height: var(--tap);
+    padding: 0 20px;
+    background: transparent;
+    border: 1px solid var(--ph-fog-700);
+    border-radius: 999px;
+    color: var(--ph-fog-200);
+    font: 400 11px/1 var(--font-text);
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: border-color var(--dur-1) var(--ease-mist), color var(--dur-1) var(--ease-mist);
+  }
+  .skip-intro:hover { border-color: var(--ph-fog-400); color: var(--ph-glow); }
+
+  :global(html.intro) .hero-video,
+  :global(html.intro-out) .hero-video { display: block; }
+  :global(html.intro) .skip-intro { display: inline-flex; align-items: center; }
+  :global(html.intro) .reveal { opacity: 0; }
+  :global(html.intro-out) .hero-video {
+    opacity: 0;
+    transition: opacity var(--dur-3) var(--ease-mist);
+  }
+  :global(html.intro-out) .reveal-1 { transition: opacity var(--dur-3) var(--ease-mist) 0.2s; }
+  :global(html.intro-out) .reveal-2 { transition: opacity var(--dur-3) var(--ease-mist) 1.2s; }
+  :global(html.intro-out) .reveal-3 { transition: opacity 1.6s var(--ease-mist) 2.4s; }
+
+  /* Niebla */
+  .fog {
+    position: absolute;
+    left: -10%;
+    right: -10%;
+    z-index: -1;
+    pointer-events: none;
+    filter: blur(24px);
+  }
+  .fog-a {
+    top: 52%;
+    height: 260px;
+    background:
+      radial-gradient(ellipse 34% 40% at 38% 50%, rgb(195 200 206 / 0.12), transparent 70%),
+      radial-gradient(ellipse 28% 30% at 66% 46%, rgb(195 200 206 / 0.08), transparent 70%);
+    animation: ph-drift 90s ease-in-out infinite alternate;
+  }
+  .fog-b {
+    top: 60%;
+    height: 200px;
+    background: radial-gradient(ellipse 45% 35% at 55% 50%, rgb(139 146 154 / 0.08), transparent 72%);
+    filter: blur(30px);
+    animation: ph-drift 140s ease-in-out infinite alternate-reverse;
+  }
+
+  .hero-title {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(28px, 3vw, 40px);
+    font-weight: 300;
+    outline: none;
+  }
+  .hero-mark {
+    width: min(820px, 92vw);
+    height: auto;
+    -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 46%, #000 55%, transparent 100%);
+    mask-image: radial-gradient(ellipse 50% 50% at 50% 46%, #000 55%, transparent 100%);
+    animation: ph-breathe 12s ease-in-out infinite;
+  }
+  @keyframes ph-breathe {
+    0%, 100% { filter: brightness(0.85); }
+    50% { filter: brightness(1.1); }
+  }
+  .wordmark {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: var(--fs-hero);
+    line-height: 1;
+    letter-spacing: var(--track-hero);
+    padding-left: var(--track-hero);
+    text-transform: uppercase;
+    color: var(--ph-pale);
+  }
+  .tagline {
+    margin: 28px 0 0;
+    font-size: var(--fs-label);
+    font-weight: 400;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--ph-fog-400);
+  }
+
+  .scroll-cue {
+    position: absolute;
+    left: 50%;
+    bottom: 32px;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    padding: 8px;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ph-fog-400);
+    transition: color var(--dur-1) var(--ease-mist);
+  }
+  .scroll-cue:hover { color: var(--ph-glow); }
+  .cue-line {
+    position: relative;
+    width: 1px;
+    height: 56px;
+    background: var(--ph-fog-900);
+    overflow: hidden;
+  }
+  .cue-line span {
+    position: absolute;
+    inset: 0;
+    background: var(--ph-fog-200);
+    animation: ph-cue 3.6s var(--ease-mist) infinite;
+  }
+  @keyframes ph-cue {
+    0% { transform: scaleY(0); transform-origin: top; }
+    45% { transform: scaleY(1); transform-origin: top; }
+    55% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  @media (max-width: 760px) {
+    .hero { padding-top: 140px; }
+    .hero-mark { width: min(420px, 100%); }
+    .wordmark { letter-spacing: 0.44em; padding-left: 0.44em; }
+    .tagline { max-width: 18em; font-size: 11px; letter-spacing: 0.28em; }
+    .cue-line { height: 40px; }
+  }
+</style>

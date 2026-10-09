@@ -1,0 +1,53 @@
+/* Palehour — tokens de diseño (ver artboard "Sistema de estilos"). */
+:root {
+  /* Color — contraste medido sobre #000 */
+  --ph-void: #000000;      /* fondo */
+  --ph-night: #0b0c0e;     /* superficies */
+  --ph-fog-900: #15171a;   /* hairlines (decorativo) */
+  --ph-fog-700: #3a4047;   /* bordes de botón y etiqueta (decorativo) */
+  --ph-fog-500: #5e656d;   /* decoración, 3.6:1 — nunca texto chico */
+  --ph-fog-400: #8b929a;   /* texto secundario, 6.7:1 */
+  --ph-fog-200: #c3c8ce;   /* texto de cuerpo, 12.5:1 */
+  --ph-pale: #e6e9ec;      /* títulos, 17.2:1 */
+  --ph-glow: #f4f6f8;      /* arco, hover, 19.4:1 */
+  --ph-frost: #9fb3c8;     /* acento: foco y estado, 9.8:1 */
+
+  /* Tipografía */
+  --font-display: 'Cormorant Garamond', Garamond, 'Times New Roman', serif;
+  --font-text: 'Hanken Grotesk', 'Helvetica Neue', system-ui, sans-serif;
+  --track-hero: 0.52em;
+  --track-h2: 0.34em;
+  --track-label: 0.28em;
+  --fs-hero: clamp(2rem, 1.2rem + 3.6vw, 4rem);            /* 32 → 64 */
+  --fs-h2: clamp(2.25rem, 1.7rem + 2.2vw, 3.5rem);         /* 36 → 56 */
+  --fs-quote: clamp(1.4375rem, 1.2rem + 1vw, 1.875rem);    /* 23 → 30 */
+  --fs-link-xl: clamp(1.5rem, 1.2rem + 1.4vw, 2.5rem);     /* 24 → 40 */
+  --fs-body-l: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem); /* 17 → 19 */
+  --fs-body: 1rem;
+  --fs-small: 0.8125rem;
+  --fs-label: 0.75rem;
+
+  /* Espaciado */
+  --sp-1: 4px;  --sp-2: 8px;   --sp-3: 12px;
+  --sp-4: 16px; --sp-5: 24px;  --sp-6: 32px;
+  --sp-7: 48px; --sp-8: 64px;  --sp-9: 96px;
+  --sp-10: 128px; --sp-11: 160px;
+  --container: 1280px;
+  --gutter: clamp(24px, 4vw, 48px);
+  --section-y: clamp(96px, 6rem + 5vw, 176px);
+  --tap: 44px;
+
+  /* Movimiento */
+  --ease-mist: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur-1: 600ms;
+  --dur-2: 1200ms;
+  --dur-3: 2400ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-1: 0ms;
+    --dur-2: 0ms;
+    --dur-3: 0ms;
+  }
+}

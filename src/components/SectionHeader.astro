@@ -1,0 +1,65 @@
+---
+// Encabezado de sección: numeral romano · línea · eyebrow, y el h2.
+interface Props {
+  id: string;
+  numeral: string;
+  eyebrow: string;
+  title: string;
+  align?: 'start' | 'center';
+}
+const { id, numeral, eyebrow, title, align = 'start' } = Astro.props;
+---
+<div class:list={['section-header', `align-${align}`]}>
+  <p class="eyebrow">
+    <span class="numeral" aria-hidden="true">{numeral}</span>
+    <span class="rule" aria-hidden="true"></span>
+    <span>{eyebrow}</span>
+  </p>
+  <h2 id={id} class="title">{title}</h2>
+</div>
+
+<style>
+  .section-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-6);
+  }
+  .align-center { align-items: center; text-align: center; }
+  .eyebrow {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--sp-4);
+    font-size: var(--fs-label);
+    font-weight: 400;
+    letter-spacing: var(--track-label);
+    text-transform: uppercase;
+    color: var(--ph-fog-400);
+  }
+  .numeral {
+    font-family: var(--font-display);
+    font-size: 18px;
+    letter-spacing: 0.1em;
+    color: var(--ph-fog-200);
+  }
+  .rule {
+    width: clamp(32px, 4vw, 48px);
+    height: 1px;
+    background: var(--ph-fog-700);
+  }
+  .title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: var(--fs-h2);
+    line-height: 1.05;
+    letter-spacing: var(--track-h2);
+    text-transform: uppercase;
+    color: var(--ph-pale);
+  }
+  .align-center .title { padding-left: var(--track-h2); }
+  @media (max-width: 760px) {
+    .title { letter-spacing: 0.24em; }
+    .align-center .title { padding-left: 0.24em; }
+  }
+</style>

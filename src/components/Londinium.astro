@@ -1,0 +1,134 @@
+---
+import SectionHeader from './SectionHeader.astro';
+import StatusTag from './StatusTag.astro';
+import Screenshots from './Screenshots.astro';
+import type { Copy } from '../i18n/es';
+
+interface Props {
+  copy: Copy;
+}
+const { copy } = Astro.props;
+const t = copy.londinium;
+const x = copy.contact.links.find((l) => l.label === 'X');
+---
+<section id="londinium" class="section" aria-labelledby="t-londinium">
+  <div class="container stack">
+    <div class="intro-grid">
+      <div class="head">
+        <SectionHeader id="t-londinium" numeral={t.numeral} eyebrow={t.eyebrow} title={t.title} />
+        <div class="tags">
+          <StatusTag variant="status">{t.status}</StatusTag>
+          <StatusTag>{t.genre}</StatusTag>
+        </div>
+      </div>
+      <div class="copy">
+        <p class="lead">{t.body}</p>
+        <dl class="facts">
+          {t.facts.map((f) => (
+            <div>
+              <dt class="label">{f.term}</dt>
+              <dd>{f.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </div>
+
+    <Screenshots shots={t.shots} />
+
+    {x && (
+      <div class="cta-row">
+        <a class="btn" href={x.href} target="_blank" rel="noopener noreferrer">
+          {t.cta}
+          <svg width="16" height="10" viewBox="0 0 16 10" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1">
+            <path d="M0 5h15M11 1l4 4-4 4"></path>
+          </svg>
+          <span class="sr-only">{copy.a11y.newTab}</span>
+        </a>
+        <p class="note">{t.ctaNote}</p>
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-block: var(--section-y);
+    border-top: 1px solid var(--ph-fog-900);
+  }
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(var(--sp-6), 6vw, 72px);
+  }
+  .intro-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr));
+    gap: var(--sp-7) var(--sp-9);
+    align-items: end;
+  }
+  .head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-6);
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+  }
+  .copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-6);
+    max-width: 560px;
+  }
+  .lead {
+    margin: 0;
+    font-size: var(--fs-body-l);
+    line-height: 1.75;
+    color: var(--ph-fog-200);
+    text-wrap: pretty;
+  }
+  .facts {
+    margin: 0;
+    padding-top: 28px;
+    border-top: 1px solid var(--ph-fog-900);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--sp-5);
+  }
+  .facts div { display: flex; flex-direction: column; gap: 6px; }
+  .facts .label { font-size: 11px; letter-spacing: 0.24em; }
+  .facts dd { margin: 0; color: var(--ph-pale); }
+
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sp-5) var(--sp-6);
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    min-height: 52px;
+    padding: 0 28px;
+    border: 1px solid var(--ph-fog-700);
+    border-radius: 999px;
+    color: var(--ph-pale);
+    font-size: var(--fs-label);
+    font-weight: 400;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    transition: border-color var(--dur-1) var(--ease-mist), color var(--dur-1) var(--ease-mist);
+  }
+  .btn:hover,
+  .btn:focus-visible { border-color: var(--ph-fog-400); color: var(--ph-glow); }
+  .note { margin: 0; font-size: var(--fs-small); color: var(--ph-fog-400); }
+
+  @media (max-width: 560px) {
+    .btn { width: 100%; }
+  }
+</style>

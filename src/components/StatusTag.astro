@@ -1,0 +1,35 @@
+---
+// Etiqueta tipo píldora. `status` agrega el punto de acento frío.
+interface Props {
+  variant?: 'status' | 'meta';
+}
+const { variant = 'meta' } = Astro.props;
+---
+<span class:list={['tag', variant]}>
+  {variant === 'status' && <span class="dot" aria-hidden="true"></span>}
+  <slot />
+</span>
+
+<style>
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+  .status { border: 1px solid var(--ph-fog-700); color: var(--ph-fog-200); }
+  .meta { border: 1px solid var(--ph-fog-900); color: var(--ph-fog-400); }
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ph-frost);
+    box-shadow: 0 0 10px rgb(159 179 200 / 0.6);
+  }
+</style>

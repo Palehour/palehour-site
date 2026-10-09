@@ -1,0 +1,100 @@
+@import './tokens.css';
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  background: var(--ph-void);
+  color-scheme: dark;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ph-void);
+  color: var(--ph-fog-200);
+  font-family: var(--font-text);
+  font-weight: 300;
+  font-size: var(--fs-body);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img, video, svg { display: block; max-width: 100%; }
+
+a { color: inherit; text-decoration: none; }
+
+a:focus-visible,
+button:focus-visible {
+  outline: 1px solid var(--ph-frost);
+  outline-offset: 6px;
+  border-radius: 2px;
+}
+
+[id] { scroll-margin-top: var(--sp-6); }
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.label {
+  font-size: var(--fs-label);
+  font-weight: 400;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--ph-fog-400);
+}
+
+/* Subrayado que crece despacio en hover/foco */
+.line-link {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 900ms var(--ease-mist), color var(--dur-1) var(--ease-mist);
+}
+.line-link:hover,
+.line-link:focus-visible { background-size: 100% 1px; color: var(--ph-glow); }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--sp-5);
+  top: -80px;
+  z-index: 50;
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--ph-night);
+  color: var(--ph-pale);
+  border: 1px solid var(--ph-fog-700);
+}
+.skip-link:focus { top: var(--sp-4); }
+
+/* Niebla: deriva lenta, solo CSS */
+@keyframes ph-drift {
+  from { transform: translate3d(-5%, 0, 0); }
+  to { transform: translate3d(5%, 0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
